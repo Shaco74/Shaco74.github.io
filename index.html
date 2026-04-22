@@ -902,7 +902,7 @@
       gap: 12px;
     }
 
-      .dock-icon {
+    .dock-icon {
       width: 42px;
       height: 42px;
       border-radius: 50%;
@@ -912,6 +912,20 @@
       place-items: center;
       font-weight: 800;
       color: #545454;
+    }
+
+    .dock-menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(90, 118, 171, 0.16);
+      background: rgba(255, 255, 255, 0.72);
+      color: #2a3152;
+      font-size: 1.1rem;
+      font-weight: 800;
+      place-items: center;
+      cursor: pointer;
     }
 
     @media (min-width: 1121px) {
@@ -1054,30 +1068,64 @@
       }
 
       .dock {
-        grid-template-columns: 1fr;
-        gap: 12px;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        align-items: center;
+        gap: 10px;
         padding: 14px;
+        position: fixed;
       }
 
       .dock .button,
       .dock .button-ghost {
-        width: 100%;
+        width: auto;
       }
 
       .dock-nav {
-        order: 2;
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + 10px);
+        transform: translateX(-50%) translateY(8px);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        z-index: 3;
+        width: min(92vw, 620px);
+        justify-content: center;
         flex-wrap: wrap;
-        gap: 16px 22px;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 18px;
+        border: 1px solid rgba(90, 118, 171, 0.2);
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 16px 34px rgba(74, 96, 144, 0.22);
+      }
+
+      .dock.is-open .dock-nav {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .dock-nav a {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(95, 124, 181, 0.18);
+        background: rgba(247, 250, 255, 0.96);
+        font-size: 0.92rem;
       }
 
       .dock-socials {
-        justify-content: center;
+        justify-content: flex-end;
+      }
+
+      .dock-menu-toggle {
+        display: grid;
       }
     }
 
     @media (max-width: 640px) {
       body {
-        padding-bottom: 182px;
+        padding-bottom: 112px;
       }
 
       .hero {
@@ -1200,16 +1248,17 @@
         width: calc(100vw - 16px);
         border-radius: 20px;
         padding: 12px;
-        gap: 10px;
+        gap: 8px;
       }
 
       .dock-nav {
-        gap: 10px 16px;
-        font-size: 0.95rem;
+        width: calc(100vw - 24px);
+        bottom: calc(100% + 8px);
+        font-size: 0.92rem;
       }
 
       .dock-socials {
-        gap: 10px;
+        gap: 8px;
       }
 
       .dock-icon {
@@ -1218,10 +1267,16 @@
         font-size: 0.95rem;
       }
 
-      .dock > .button {
-        min-height: 48px;
+      .dock-menu-toggle {
+        width: 36px;
+        height: 36px;
         font-size: 0.95rem;
-        padding: 0 18px;
+      }
+
+      .dock > .button {
+        min-height: 40px;
+        font-size: 0.9rem;
+        padding: 0 14px;
       }
     }
   </style>
@@ -1500,6 +1555,35 @@ if (needsAutomation) {
       <a class="dock-icon" href="https://www.linkedin.com/in/kacper-coemlek/" target="_blank" rel="noreferrer" aria-label="LinkedIn">in</a>
       <a class="dock-icon" href="https://github.com/Shaco74" target="_blank" rel="noreferrer" aria-label="GitHub">GH</a>
     </div>
+
+    <button class="dock-menu-toggle" type="button" aria-label="Navigation umschalten" aria-expanded="false">☰</button>
   </nav>
+
+  <script>
+    const dock = document.querySelector('.dock');
+    const dockToggle = document.querySelector('.dock-menu-toggle');
+    const dockLinks = document.querySelectorAll('.dock-nav a');
+
+    if (dock && dockToggle) {
+      dockToggle.addEventListener('click', () => {
+        const isOpen = dock.classList.toggle('is-open');
+        dockToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      dockLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          dock.classList.remove('is-open');
+          dockToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!dock.contains(event.target)) {
+          dock.classList.remove('is-open');
+          dockToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+  </script>
 </body>
 </html>
