@@ -536,9 +536,9 @@
       letter-spacing: -0.07em;
       max-width: 10ch;
       margin-bottom: 20px;
-      overflow-wrap: anywhere;
+      overflow-wrap: normal;
       word-break: normal;
-      hyphens: auto;
+      hyphens: none;
     }
 
     .project-copy .clara-title {
@@ -1089,10 +1089,11 @@
         pointer-events: none;
         transition: transform 0.2s ease, opacity 0.2s ease;
         z-index: 3;
-        width: min(92vw, 620px);
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 10px;
+        width: min(88vw, 320px);
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
         padding: 10px;
         border-radius: 18px;
         border: 1px solid rgba(90, 118, 171, 0.2);
@@ -1107,6 +1108,9 @@
       }
 
       .dock-nav a {
+        display: block;
+        width: 100%;
+        text-align: center;
         padding: 8px 12px;
         border-radius: 999px;
         border: 1px solid rgba(95, 124, 181, 0.18);
@@ -1156,7 +1160,6 @@
       }
 
       .section-title,
-      .project-copy h2,
       .project-list h3 {
         font-size: clamp(2rem, 10.5vw, 2.9rem);
         line-height: 1.04;
@@ -1164,7 +1167,18 @@
         text-wrap: balance;
       }
 
-      .project-copy .clara-title .title-line--first {
+      .project-copy h2 {
+        font-size: clamp(1.58rem, 7.3vw, 2.14rem);
+        line-height: 1.06;
+        letter-spacing: -0.028em;
+      }
+
+      .project-copy .clara-title .title-line--first,
+      .project-copy .clara-title .title-line--second {
+        white-space: nowrap;
+      }
+
+      .project-copy .clara-title .title-line--third {
         white-space: normal;
       }
 
@@ -1252,7 +1266,7 @@
       }
 
       .dock-nav {
-        width: calc(100vw - 24px);
+        width: min(calc(100vw - 24px), 320px);
         bottom: calc(100% + 8px);
         font-size: 0.92rem;
       }
@@ -1418,8 +1432,8 @@ if (needsAutomation) {
               <div class="project-eyebrow">Featured Project</div>
               <h2 class="clara-title">
                 <span class="title-line title-line--first">clara24</span>
-                <span class="title-line">die Betriebssoftware für</span>
-                <span class="title-line">24h-Betreuungsagenturen</span>
+                <span class="title-line title-line--second">die Betriebssoftware für</span>
+                <span class="title-line title-line--third">24h-Betreuungsagenturen</span>
               </h2>
               <p>
                 clara24 bündelt Anfrage, Kundenmanagement, Einsatzplanung und operative Abläufe in einem System.
